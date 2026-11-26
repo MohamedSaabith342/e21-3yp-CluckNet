@@ -1,0 +1,8 @@
+.env
+certs/
+*.p12
+*.jks
+*.key
+**/firebase-service-account.json
+target/
+.idea/

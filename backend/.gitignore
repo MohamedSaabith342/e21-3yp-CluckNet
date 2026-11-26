@@ -1,0 +1,62 @@
+.env
+certs/
+*.p12
+*.jks
+*.key
+**/firebase-service-account.json
+target/
+.idea/
+
+# ==========================================
+# Kubernetes Secrets
+# ==========================================
+k8s/**/secret.yaml
+k8s/**/secret.yml
+k8s/**/secrets.yaml
+k8s/**/secrets.yml
+k8s/**/configmap.yaml
+
+# ==========================================
+# Certificates and Private Keys
+# ==========================================
+k8s/certs/
+
+*.pem
+*.key
+*.crt
+*.p12
+*.jks
+*.pfx
+
+# ==========================================
+# Firebase Credentials
+# ==========================================
+k8s/firebase/
+**/firebase-service-account.json
+
+# ==========================================
+# Environment Variables
+# ==========================================
+.env
+.env.*
+!.env.example
+
+# ==========================================
+# Terraform Sensitive Files
+# ==========================================
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+*.tfplan
+crash.log
+
+# ==========================================
+# IDE and Build Files
+# ==========================================
+.idea/
+.vscode/
+target/
+*.iml
+*.log

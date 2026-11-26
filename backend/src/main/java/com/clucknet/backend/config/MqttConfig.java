@@ -63,7 +63,7 @@ public class MqttConfig {
                 options.setSocketFactory(getSslSocketFactory());
                 log.info("Secure TLS Socket Factory loaded successfully for AWS IoT Core.");
             } catch (Exception ex) {
-                log.error("Failed to load secure TLS cert keystores. Falling back: {}", ex.getMessage());
+                throw new IllegalStateException("Cannot load MQTT TLS keystores", ex);
             }
         } else {
             log.warn("MQTT initialized in standard non-SSL TCP mode. Suitable ONLY for local development simulation.");

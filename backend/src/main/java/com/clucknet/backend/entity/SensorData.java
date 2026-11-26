@@ -1,6 +1,5 @@
 package com.clucknet.backend.entity;
 
-import com.clucknet.backend.entity.mysql.User;
 import jakarta.persistence.*;
 import lombok.*;
 

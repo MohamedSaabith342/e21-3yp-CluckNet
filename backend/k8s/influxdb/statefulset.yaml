@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: influxdb
+  namespace: clucknet
+spec:
+  serviceName: influxdb
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: influxdb
+
+  template:
+    metadata:
+      labels:
+        app: influxdb
+
+    spec:
+      containers:
+        - name: influxdb
+          image: influxdb:2.7-alpine
+
+          ports:
+            - containerPort: 8086
+
+          env:
+            - name: DOCKER_INFLUXDB_INIT_MODE
+              value: setup
+
+            - name: DOCKER_INFLUXDB_INIT_ORG
+              value: cluckorg
+
+            - name: DOCKER_INFLUXDB_INIT_BUCKET
+              value: telemetry
+
+          envFrom:
+            - secretRef:
+                name: influxdb-secret
+
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8086
+            periodSeconds: 10
+            failureThreshold: 30
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8086
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8086
+            periodSeconds: 20
+
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/influxdb2
+
+            - name: config
+              mountPath: /etc/influxdb2
+
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: clucknet-gp3
+        resources:
+          requests:
+            storage: 10Gi
+
+    - metadata:
+        name: config
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: clucknet-gp3
+        resources:
+          requests:
+            storage: 1Gi
